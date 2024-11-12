@@ -1,0 +1,51 @@
+[
+    {
+        "number": 1,
+        "name": "Điểm 1",
+        "address": "130 Nguyễn Thị Minh Khai,Phường Võ Thị Sáu,Quận 3",
+        "detail": "Điểm bán bóng đèn 1",
+        "lat": 10.777174, 
+        "lng": 106.692745
+    },
+    {
+        "number": 2,
+        "name": "Điểm 2",
+        "address": "42 Võ Văn Tần,Phường Võ Thị Sáu,Quận 3",
+        "detail": "Điểm bán bóng đèn 2",
+        "lat":  10.778167,
+        "lng": 106.691791 
+    },
+    {
+        "number": 3,
+        "name": "Điểm 3",
+        "address": "2C Lê Quý Đôn,Phường Võ Thị Sáu,Quận 3",
+        "detail": "Điểm bán bóng đèn 3",
+        "lat":  10.779395,
+        "lng":  106.692866 
+    },
+    {
+        "number": 4,
+        "name": "Điểm 4",
+        "address": "103 Trương Định,Phường Võ Thị Sáu,Quận 3",
+        "detail": "Điểm bán bóng đèn 4",
+        "lat":  10.777881, 
+        "lng": 106.689572
+       
+    },
+    {
+        "number": 5,
+        "name": "Điểm 5",
+        "address": "8 Ngô Thời NhiệmPhường Võ Thị Sáu,Quận 3",
+        "detail": "Điểm bán bóng đèn 5",
+        "lat": 10.780228,
+        "lng": 106.68956
+    },
+    {
+        "number": 6,
+        "name": "Điểm 6",
+        "address": "15 Lê Quý Đôn,Phường Võ Thị Sáu,Quận 3",
+        "detail": "Điểm bán bóng đèn 6",
+        "lat":  10.780321, 
+        "lng":  106.691861
+    }  
+]
