@@ -14,50 +14,98 @@ export default {
       container: this.$refs.mapContainer,
       style: "https://maps.vietmap.vn/mt/tm/style.json?apikey=" + VIETMAP_API_KEY,
       center: [106.69278715425844, 10.777110166759954],
-      zoom: 15,
+      zoom: 10,
     });
-
-    this.map.addControl(new vietmapgl.NavigationControl(), `top-right`);
-
-    pointLight.forEach(point => {
-      const markerElement = this.createCustomMarker();
-
-      const marker = new vietmapgl.Marker({
-        element: markerElement,
-      })
-        .setLngLat([point.lng, point.lat])
-        .setOffset([0, 20])
-        .addTo(this.map);
-
-
-      const popup = new vietmapgl.Popup({
+    const popup = new vietmapgl.Popup({
         closeButton: false,
         closeOnClick: false,
       });
-
-      markerElement.addEventListener('mouseenter', () => {
-        this.map.getCanvas().style.cursor = "pointer";
-
-        const hoverDescription = `<strong>Name: ${point.name}</strong><br>Address: ${point.address}`;
-
-        popup.setLngLat([point.lng, point.lat]).setHTML(hoverDescription).addTo(this.map);
+    this.map.addControl(new vietmapgl.NavigationControl(), `top-right`);
+    this.map.on('load', async () => {
+      // Add an image to use as a custom marker
+      const image = await this.map.loadImage('https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/location-64.png');
+      this.map.addImage('custom-marker', image.data);
+      // Add a GeoJSON source with 3 points.
+      
+      this.map.addSource('points', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [
+            {
+              'type': 'Feature',
+              'properties': {
+                "data": "Your custom data 1"
+              },
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [
+                  106.76523729226253,
+                  10.888743640168022
+                ]
+              }
+            },
+            {
+              'type': 'Feature',
+              'properties': {
+                "data": "Your custom data 2"
+              },
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [
+                  106.62112796896037,
+                  10.849706514610569
+                ]
+              }
+            },
+            {
+              'type': 'Feature',
+              'properties': {
+                "data": "Your custom data 3"
+              },
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [
+                  106.6678217280983,
+                  10.760176118420599
+                ]
+              }
+            }
+          ]
+        }
       });
 
-      markerElement.addEventListener('mouseleave', () => {
-        this.map.getCanvas().style.cursor = "";
+      // Add a symbol layer
+      this.map.addLayer({
+        'id': 'symbols',
+        'type': 'symbol',
+        'source': 'points',
+        'layout': {
+          'icon-image': 'custom-marker'
+        }
+      });
+
+      // Center the map on the coordinates of any clicked symbol from the 'symbols' layer.
+      this.map.on('click', 'symbols', (e) => {
+        console.log(e.features[0].properties);
+        const hoverDescription = `<strong>Name: ${e.features[0].properties.data}</strong><br>Coordinates: ${e.features[0].geometry.coordinates}`;
+
+        
+        popup.setLngLat(e.features[0].geometry.coordinates).setHTML(hoverDescription).addTo(this.map);
+        this.map.flyTo({
+          center: e.features[0].geometry.coordinates
+        });
+      });
+
+      // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
+      this.map.on('mouseenter', 'symbols', () => {
+        this.map.getCanvas().style.cursor = 'pointer';
+      });
+
+      // Change it back to a pointer when it leaves.
+      this.map.on('mouseleave', 'symbols', () => {
+        this.map.getCanvas().style.cursor = '';
         popup.remove();  
-      });
-
-      markerElement.addEventListener('click', () => {
-        const clickDescription = `
-      <strong>Name: ${point.name}</strong><br>
-      Detail: ${point.detail}<br>
-      Address: ${point.address}<br>
-      Latitude: ${point.lat}<br>
-      Longitude: ${point.lng}
-    `;
-
-        popup.setLngLat([point.lng, point.lat]).setHTML(clickDescription).addTo(this.map);
       });
     });
 
